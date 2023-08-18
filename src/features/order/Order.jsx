@@ -1,13 +1,23 @@
-import { useLoaderData } from "react-router-dom"
+import { useFetcher, useLoaderData } from 'react-router-dom'
 import {
   calcMinutesLeft,
   formatCurrency,
   formatDate,
-} from "../../utils/helpers"
-import OrderItem from "./OrderItem"
+} from '../../utils/helpers'
+import OrderItem from './OrderItem'
+import { useEffect } from 'react'
+import UpdateOrder from './UpdateOrder'
 
 function Order() {
   const order = useLoaderData()
+  const fetcher = useFetcher()
+
+  useEffect(
+    function () {
+      if (!fetcher.data && !fetcher.state === 'idle') fetcher.load('/menu')
+    },
+    [fetcher]
+  )
 
   const {
     id,
@@ -41,7 +51,7 @@ function Order() {
         <p className="font-medium">
           {deliveryIn >= 0
             ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
-            : "Order should have arrived"}
+            : 'Order should have arrived'}
         </p>
         <p className="text-xs text-stone-500">
           (Estimated delivery: {formatDate(estimatedDelivery)})
@@ -50,7 +60,15 @@ function Order() {
 
       <ul className="divide-y divide-stone-200 border-b border-t">
         {cart.map((item) => (
-          <OrderItem item={item} key={item.pizzaId} />
+          <OrderItem
+            item={item}
+            key={item.pizzaId}
+            isLoadingIngredients={fetcher.state === 'loading'}
+            ingredients={
+              fetcher?.data?.find((el) => el.id === item.pizzaId)
+                ?.ingredients ?? []
+            }
+          />
         ))}
       </ul>
 
@@ -64,9 +82,12 @@ function Order() {
           </p>
         )}
         <p className="font-bold">
-          To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
+          To pay on delivery:
+          {formatCurrency(orderPrice + priorityPrice)}
         </p>
       </div>
+
+      {!priority && <UpdateOrder />}
     </div>
   )
 }

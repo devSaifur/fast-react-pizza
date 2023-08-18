@@ -1,12 +1,13 @@
-import { redirect } from "react-router-dom"
-import { createOrder } from "../../services/apiRestaurant"
-import store from "../../store"
-import { clearCart } from "../cart/cartSlice"
+import { redirect } from 'react-router-dom'
+
+import { createOrder } from '../../services/apiRestaurant'
+import { clearCart } from '../cart/cartSlice'
+import store from '../../store'
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-    str,
+    str
   )
 
 async function action({ request }) {
@@ -16,13 +17,13 @@ async function action({ request }) {
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
-    priority: data.priority === "on",
+    priority: data.priority === 'true',
   }
 
   const errors = {}
   if (!isValidPhone(order.phone))
     errors.phone =
-      "Please give us your phone number. We might need it to contact you."
+      'Please give us your phone number. We might need it to contact you.'
 
   if (Object.keys(errors).length > 0) return errors
 

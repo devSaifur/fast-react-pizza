@@ -1,4 +1,4 @@
-import { getOrder } from "../../services/apiRestaurant"
+import { getOrder } from '../../services/apiRestaurant'
 
 async function loader({ params }) {
   const order = await getOrder(params.orderId)

@@ -1,22 +1,23 @@
-import { useState } from "react";
-import Button from "../../ui/Button";
-import { useDispatch } from "react-redux";
-import { updateName } from "./userSlice";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import { updateName } from './userSlice'
+import Button from '../../ui/Button'
 
 function CreateUser() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('')
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (!username) return;
+    if (!username) return
 
-    dispatch(updateName(username));
-    navigate("/menu");
+    dispatch(updateName(username))
+    navigate('/menu')
   }
 
   return (
@@ -33,13 +34,13 @@ function CreateUser() {
         className="input mb-8 w-72"
       />
 
-      {username !== "" && (
+      {username !== '' && (
         <div>
           <Button type="primary">Start ordering</Button>
         </div>
       )}
     </form>
-  );
+  )
 }
 
-export default CreateUser;
+export default CreateUser

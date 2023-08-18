@@ -1,21 +1,19 @@
-import { Link } from "react-router-dom"
-import LinkButton from "../../ui/LinkButton"
-import Button from "../../ui/Button"
-import CartItem from "./CartItem"
-import { useDispatch, useSelector } from "react-redux"
-import { clearCart, getCart } from "./cartSlice"
-import EmptyCart from "./EmptyCart"
-import { getHasOrdered, getUserName } from "../user/userSlice"
+import { useDispatch, useSelector } from 'react-redux'
+
+import { clearCart, getCart } from './cartSlice'
+import { getUserName } from '../user/userSlice'
+import LinkButton from '../../ui/LinkButton'
+import Button from '../../ui/Button'
+import CartItem from './CartItem'
+import EmptyCart from './EmptyCart'
 
 function Cart() {
   const cart = useSelector(getCart)
   const username = useSelector(getUserName)
-  const hasOrdered = useSelector(getHasOrdered)
 
   const dispatch = useDispatch()
 
   if (!cart.length) return <EmptyCart />
-  if (hasOrdered) return null
 
   return (
     <div className="px-4 py-3">
